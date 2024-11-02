@@ -1,0 +1,2 @@
+C:\Users\isc_2\source\repos\pruebaLeonardoManceroFront\PruebaLMancero\obj\Debug\PruebaLMancero.esproj.CoreCompileInputs.cache
+C:\Users\isc_2\source\repos\prueba1BGFront\pruebaLeonardoManceroFront\PruebaLMancero\obj\Debug\PruebaLMancero.esproj.CoreCompileInputs.cache
