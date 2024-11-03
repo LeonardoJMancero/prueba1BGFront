@@ -6,20 +6,29 @@ import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrls: ['./dashboard.component.css',
+    '../../assets/vendors/mdi/css/materialdesignicons.min.css',
+    '../../assets/vendors/css/vendor.bundle.base.css',
+    '../../assets/vendors/jvectormap/jquery-jvectormap.css',
+    '../../assets/vendors/owl-carousel-2/owl.carousel.min.css',
+    '../../assets/vendors/owl-carousel-2/owl.theme.default.min.css'
+  ],
 })
 
 
 export class DashboardComponent implements OnInit {
-  username: string | null;
+  username: string | undefined | null;
   constructor(private authService: AuthService, private router: Router) {
-    this.username = this.authService.getUsername();
-    console.log(this.username);
+    this.username = this.authService.getUsername()?.toUpperCase();    
   }
 
   ngOnInit() {    
     this.checkSession();
     window.onpopstate = () => this.checkSession();
+
+    if (this.username === undefined || this.username === "" || this.username === null) {
+      this.router.navigate(['/login']);
+    }
    
   }
 

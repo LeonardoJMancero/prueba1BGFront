@@ -27,9 +27,7 @@ export class AuthService {
 
   log() {
     this.isAuthenticated = true;
-    sessionStorage.setItem('isLoggedIn', 'true');
-    sessionStorage.setItem('username', "leonardo");
-   
+    sessionStorage.setItem('isLoggedIn', 'true');   
   }
 
   logout() {

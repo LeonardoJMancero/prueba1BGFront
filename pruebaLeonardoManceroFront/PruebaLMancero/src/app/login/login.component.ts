@@ -34,7 +34,7 @@ export class LoginComponent {
 
     // Detectar el evento de "back" o "forward"
     window.addEventListener('popstate', (event) => {
-      //console.log('Navegación hacia atrás o adelante detectada');
+      console.log('Navegación hacia atrás o adelante detectada');
 
       this.logout();
       //this.router.navigate(['/login']);
@@ -42,7 +42,7 @@ export class LoginComponent {
     });
 
     this.login();
-   
+    
   }
 
   onSubmit() {
@@ -50,6 +50,7 @@ export class LoginComponent {
       (response) => {
         this.data = response; // Captura la respuesta deserializada
         this.validateResponse(response);
+        sessionStorage.setItem('username', this.username);
       },
       (error) => {
         this.errorMessage = 'Credenciales incorrectas';
@@ -67,7 +68,7 @@ export class LoginComponent {
     }
 
     datos.forEach((user: any) => {
-      if (user.statusCode==200) {
+      if (user.statusCode == 200 ) {        
         this.router.navigate(['/dashboard']);
       }
     });
@@ -76,6 +77,8 @@ export class LoginComponent {
       this.data = datos; // Solo asigna si no hay errores
     }
   }
+
+  
 
   login() {
     this.authService.log();

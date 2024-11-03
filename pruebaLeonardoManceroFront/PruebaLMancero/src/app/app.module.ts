@@ -8,13 +8,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ClientesComponent } from './clientes/clientes.component';
 
 
 @NgModule({
   declarations: [   
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    ClientesComponent
   ],
   imports: [
     HttpClientModule,
