@@ -41,6 +41,14 @@
             <span class="menu-title">Productos</span>
           </a>
         </li>
+        <li class="nav-item menu-items">
+          <a class="nav-link" routerLink="/usuarios">
+            <span class="menu-icon">
+              <i class="mdi mdi-playlist-play"></i>
+            </span>
+            <span class="menu-title">Usuarios</span>
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- partial -->
@@ -233,7 +241,7 @@
               <form [formGroup]="deletedClientes">
                 <div class="form-group">
                   <label>¿Deseas Inactivar al Cliente?</label>
-                  <input type="text" class="form-control" [(ngModel)]="identificacion" id="identificacion" formControlName="identificacion" matInput>
+                  <input type="text" class="form-control" [(ngModel)]="identificacion" id="identificacion" formControlName="identificacion" matInput readonly>
                 </div>             
                 <div class="form-group">
                   <div *ngIf="data" class="text-center pt-1 mb-1 pb-1">
