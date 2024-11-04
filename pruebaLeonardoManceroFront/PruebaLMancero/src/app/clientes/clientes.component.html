@@ -24,7 +24,7 @@
         <li class="nav-item nav-category">
           <span class="nav-link">Navegacion</span>
         </li>
-        
+
         <li class="nav-item menu-items">
           <a class="nav-link" routerLink="/dashboard">
             <span class="menu-icon">
@@ -65,71 +65,71 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="col-lg-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <div class="template-demo">
-                    <div class="col-md-8 grid-margin">
-                      <div class="template-demo">
-                        <button type="button" (click)="openModal()" class="btn btn-success btn-icon-text">
-                          <i class="mdi mdi-plus btn-icon-prepend"></i> Clientes
-                        </button>                       
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+         
           <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Profile</th>
-                          <th>VatNo.</th>
-                          <th>Created</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Jacob</td>
-                          <td>53275531</td>
-                          <td>12 May 2017</td>
-                          <td><label class="badge badge-danger">Pending</label></td>
-                        </tr>
-                        <tr>
-                          <td>Messsy</td>
-                          <td>53275532</td>
-                          <td>15 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
-                        <tr>
-                          <td>John</td>
-                          <td>53275533</td>
-                          <td>14 May 2017</td>
-                          <td><label class="badge badge-info">Fixed</label></td>
-                        </tr>
-                        <tr>
-                          <td>Peter</td>
-                          <td>53275534</td>
-                          <td>16 May 2017</td>
-                          <td><label class="badge badge-success">Completed</label></td>
-                        </tr>
-                        <tr>
-                          <td>Dave</td>
-                          <td>53275535</td>
-                          <td>20 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
-                      </tbody>
+                    <div class="col-md-4 grid-margin" >
+                      <div class="template-demo">
+                        <button type="button" (click)="openModal()" class="btn btn-success btn-icon-text" style="width:100%">
+                          <i class="mdi mdi-plus btn-icon-prepend"></i> Agregar Clientes
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-12 grid-margin">
+                      <input [(ngModel)]="searchTerm" class="form-control" (input)="onSearch()" placeholder="Buscar Identificacion..." />
+                    </div>
+                    <table mat-table [dataSource]="filteredData" [dataSource]="paginatedData" class="mat-elevation-z8" style="color:white">
+                      <ng-container matColumnDef="nombres">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Nombres</th>
+                        <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="identificacion">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Identificacion</th>
+                        <td mat-cell *matCellDef="let element">{{ element.identificacion }}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="direccion">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Direccion</th>
+                        <td mat-cell *matCellDef="let element">{{ element.direccion }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="telefono">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Telefono</th>
+                        <td mat-cell *matCellDef="let element">{{ element.telefono }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="email">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Email</th>
+                        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="fecharegistro">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Fecha Registro</th>
+                        <td mat-cell *matCellDef="let element">{{ element.fechaRegistro }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="estado">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Estado</th>
+                        <td mat-cell *matCellDef="let element">{{ element.estado }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="mat-mdc-cell">Acciones</th>
+                        <td mat-cell *matCellDef="let element">
+                          <button mat-button (click)="openModalUpdate(element)" class="btn btn-outline-primary btn-rounded btn-icon" title="Editar"><i class="mdi mdi-upload btn-icon-prepend"></i></button>
+                          <button mat-button (click)="openModalDeleted(element)" class="btn btn-outline-danger btn-rounded btn-icon" title="Eliminar"><i class="mdi mdi-delete btn-icon-prepend"></i></button>
+                        </td>
+
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="['nombres', 'identificacion', 'direccion','telefono','email','fecharegistro','estado','actions']"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['nombres', 'identificacion', 'direccion','telefono','email','fecharegistro','estado','actions'];"></tr>
                     </table>
+                    <div class="mat-elevation-z8" style="color:white">
+                      <mat-paginator [length]="filteredData.length"
+                                     [pageSize]="pageSize"
+                                     (page)="onPageChange($event)">
+                      </mat-paginator>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -139,44 +139,117 @@
           <!-- Modal -->
           <div class="modal " *ngIf="isModalOpen">
             <div class="modal-content">
-              <a (click)="closeModal()" class="close">&times;</a>
-              <form class="forms-sample">
+
+              <form [formGroup]="clientes">
                 <div class="form-group">
-                  <label for="exampleInputUsername1">Username</label>
-                  <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                  <label>Nombres</label>
+                  <input type="text" class="form-control" id="nombres" placeholder="Nombres" formControlName="nombres">
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                  <label>Identificacion</label>
+                  <input type="text" class="form-control" formControlName="identificacion" maxlength="15" (keydown)="allowOnlyNumbers($event)" id="identificacion" placeholder="Identificacion">
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputConfirmPassword1">Confirm Password</label>
-                  <input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Password">
+                  <label>Direccion</label>
+                  <input type="text" class="form-control" id="direccion" placeholder="Direccion" formControlName="direccion">
                 </div>
-                <div class="form-check form-check-flat form-check-primary">
-                  <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input"> Remember me
-                  </label>
+                <div class="form-group">
+                  <label>Telefono</label>
+                  <input type="text" class="form-control" id="telefono" placeholder="Telefono" formControlName="telefono" maxlength="10" (keydown)="allowOnlyNumbers($event)">
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                <button class="btn btn-dark">Cancel</button>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email">
+                </div>
+
+                <div class="form-group">
+                  <div *ngIf="data" class="text-center pt-1 mb-1 pb-1">
+                    <p style="color: white;">{{ data.mensaje }}</p>
+                  </div>
+                </div>
+
+                <button (click)="enviarData()" class="btn btn-primary mr-2">Enviar</button>
+                <button (click)="closeModal()" class="btn btn-light">Cancelar</button>
               </form>
 
             </div>
           </div>
+
+          <div class="modal " *ngIf="isModalOpenUpdate">
+            <div class="modal-content">
+              <form [formGroup]="clientesUpdate">
+                <div class="form-group">
+                  <label>Nombres</label>
+                  <input type="text" class="form-control" [(ngModel)]="nombres" id="nombres" placeholder="Nombres" formControlName="nombres" matInput>
+                </div>
+                <div class="form-group">
+                  <label>Identificacion</label>
+                  <input type="text" class="form-control" [(ngModel)]="identificacion" formControlName="identificacion" maxlength="15" (keydown)="allowOnlyNumbers($event)" id="identificacion" placeholder="Identificacion" readonly>
+                </div>
+                <div class="form-group">
+                  <label>Direccion</label>
+                  <input type="text" class="form-control" [(ngModel)]="direccion" id="direccion" placeholder="Direccion" formControlName="direccion">
+                </div>
+                <div class="form-group">
+                  <label>Telefono</label>
+                  <input type="text" class="form-control" [(ngModel)]="telefono" id="telefono" placeholder="Telefono" formControlName="telefono" maxlength="10" (keydown)="allowOnlyNumbers($event)">
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-control" [(ngModel)]="email" id="email" placeholder="Email" formControlName="email">
+                </div>
+
+                <select class="form-select btn btn-outline-secondary" id="seleccion" formControlName="estado">
+                  <option *ngFor="let opcion of opciones" [value]="opcion.valor">
+                    {{ opcion.texto }}
+                  </option>
+                </select>
+
+                <div class="form-group">
+                  <div *ngIf="data" class="text-center pt-1 mb-1 pb-1">
+                    <p style="color: white;">{{ data.mensaje }}</p>
+                  </div>
+                </div>
+
+                <button (click)="enviarDataUpdate()" class="btn btn-primary mr-2">Enviar</button>
+                <button (click)="closeModalUpdate()" class="btn btn-light">Cancelar</button>
+              </form>
+
+            </div>
+          </div>
+
+
+          <div class="modal " *ngIf="isModalOpenDeleted">
+            <div class="modal-content-deleted">
+
+              <form [formGroup]="deletedClientes">
+                <div class="form-group">
+                  <label>¿Deseas Inactivar al Cliente?</label>
+                  <input type="text" class="form-control" [(ngModel)]="identificacion" id="identificacion" formControlName="identificacion" matInput>
+                </div>             
+                <div class="form-group">
+                  <div *ngIf="data" class="text-center pt-1 mb-1 pb-1">
+                    <p style="color: white;">{{ data.mensaje }}</p>
+                  </div>
+                </div>
+
+                <button (click)="enviarDataDeleted()" class="btn btn-primary mr-2">Enviar</button>
+                <button (click)="closeModalDeleted()" class="btn btn-light">Cancelar</button>
+              </form>
+
+            </div>
+          </div>
+
+
         </div>
 
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Leonardo Mancero</span>
-            </div>
-          </footer>
-          <!-- partial -->
-        </div>
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Leonardo Mancero</span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
       <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->

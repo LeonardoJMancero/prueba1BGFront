@@ -9506,6 +9506,16 @@ caption {
 th {
   text-align: inherit;
   text-align: -webkit-match-parent;
+  color:white;
+  align-content:center;
+  align-items:center;
+  text-align:center;
+
+}
+
+td {
+  color: white;
+  text-align: center;
 }
 
 label {
@@ -10961,7 +10971,7 @@ pre {
   .jsgrid .jsgrid-table td {
     padding: 0.9375rem;
     vertical-align: top;
-    border-top: 1px solid #2c2e33;
+    border-top: 10px solid #2c2e33;
   }
 
   .table thead th, .jsgrid .jsgrid-table thead th {
@@ -11012,6 +11022,7 @@ pre {
 .table-primary > th,
 .table-primary > td {
   background-color: #0084d5;
+
 }
 
   .table-primary th,
@@ -11346,7 +11357,7 @@ pre {
 .jsgrid .jsgrid-table .jsgrid-filter-row select:focus, .jsgrid .jsgrid-table .jsgrid-filter-row input:focus[type=number], .select2-container--default .select2-selection--single:focus, .select2-container--default .select2-selection--single .select2-search__field:focus, .typeahead:focus,
 .tt-query:focus,
 .tt-hint:focus {
-  color: #495057;
+  color: white;
   background-color: #fff;
   border-color: #80bdff;
   outline: 0;
@@ -11368,7 +11379,8 @@ pre {
 .jsgrid .jsgrid-table .jsgrid-filter-row select[readonly], .jsgrid .jsgrid-table .jsgrid-filter-row input[readonly][type=number], .select2-container--default .select2-selection--single[readonly], .select2-container--default .select2-selection--single .select2-search__field[readonly], .typeahead[readonly],
 .tt-query[readonly],
 .tt-hint[readonly] {
-  background-color: #e9ecef;
+  /*background-color: #e9ecef;*/
+  background-color: transparent;
   opacity: 1;
 }
 
@@ -28579,10 +28591,22 @@ div.tagsinput {
   /* color:black*/
 }
 
+.modal-content-deleted {
+  background-color: #191c24;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%; /* Ancho de la modal */
+  /* color:black*/
+}
+
 .close {
   color: #aaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
   padding-bottom: 5%
+}
+.mat-mdc-cell {
+  border-bottom-color:white; 
 }
