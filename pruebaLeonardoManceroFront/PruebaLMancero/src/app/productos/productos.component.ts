@@ -1,18 +1,19 @@
 import { Component, Directive, ElementRef, HostListener } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Respuestas } from '../models/model';
-import { consultarClientes, deletedClientes } from '../models/consultarClientes';
+
 import { PageEvent } from '@angular/material/paginator';
+import { consultarProductos, deletedProductos } from '../models/consultarProductos';
 
 
 
 @Component({
-  selector: '[soloNumeros],app-clientes',
-  templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.css',
+  selector: '[soloNumeros],app-productos',
+  templateUrl: './productos.component.html',
+  styleUrls: ['./productos.component.css',
     '../../assets/vendors/mdi/css/materialdesignicons.min.css',
     '../../assets/vendors/css/vendor.bundle.base.css',
     '../../assets/vendors/jvectormap/jquery-jvectormap.css',
@@ -21,29 +22,30 @@ import { PageEvent } from '@angular/material/paginator';
   ],
 })
 
-export class ClientesComponent {
+export class productosComponent {
 
   username: string | undefined | null;
-  clientes: FormGroup;
-  clientesUpdate: FormGroup;
-  deletedClientes: FormGroup;
+  productos: FormGroup;
+  productosUpdate: FormGroup;
+  deletedproductos: FormGroup;
   data: Respuestas | undefined | null;
   validationErrors: any;
 
-  nombres: string | undefined | null;
-  direccion: string | undefined | null;
-  telefono: string | undefined | null;
-  identificacion: string | undefined | null;
-  email: string | undefined | null;
+  codigo: string | undefined | null;
+  nombreProducto: string | undefined | null;
+  estado: string | undefined | null;
+  fechaRegistro: string | undefined | null;
+  precio: string | undefined | null;
+  costo: string | undefined | null;
 
-  datos: consultarClientes[] = [];
-  filteredData: consultarClientes[] = [];
-  selectedItem: consultarClientes | null = null;
+  datos: consultarProductos[] = [];
+  filteredData: consultarProductos[] = [];
+  selectedItem: consultarProductos | null = null;
   searchTerm: string = '';
   pageSize: number = 5;
   pageIndex: number = 0;
-  datosClientes: consultarClientes | null | undefined;
-  datosClientesDeleted: deletedClientes | null | undefined;
+  datosproductos: consultarProductos | null | undefined;
+  datosproductosDeleted: deletedProductos | null | undefined;
 
   selectedOption: string = '';
 
@@ -54,27 +56,26 @@ export class ClientesComponent {
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private http: HttpClient, private el: ElementRef) {
     this.username = this.authService.getUsername()?.toUpperCase();
-    this.clientes = this.fb.group({
-      nombres: [''],
-      identificacion: [''],
-      direccion: [''],
-      telefono: [''],
-      email: [''],
+    this.productos = this.fb.group({
+      codigo: [''],
+      nombreProducto: [''],
+      precio: [''],
+      costo: [''],
+      estado: ['Activo'],
     });
 
-    this.clientesUpdate = this.fb.group({
-      nombres: [''],
-      identificacion: [''],
-      direccion: [''],
-      telefono: [''],
-      email: [''],
-      estado: ['Activo']
+    this.productosUpdate = this.fb.group({
+      codigo: [''],
+      nombreProducto: [''],
+      precio: ['0'],
+      costo: ['0'],
+      estado: ['Activo'],
     });
 
-    this.deletedClientes = this.fb.group({
-      identificacion: [''],
+    this.deletedproductos = this.fb.group({
+      codigo: [''],
     });
-    
+
   }
 
   allowOnlyNumbers(event: KeyboardEvent) {
@@ -87,27 +88,12 @@ export class ClientesComponent {
     }
   }
 
-  validateNumber(event: KeyboardEvent): void {
-    const key = event.key;
-
-    // Permitir teclas de control y navegación
-    const controlKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Enter', 'Escape'];
-    if (controlKeys.includes(key)) {
-      return;
-    }
-
-    // Validar que solo se permita el ingreso de números
-    if (!/^\d$/.test(key)) {
-      event.preventDefault();
-    }
-  }
-
   enviarData() {
-    const formData = this.clientes.value;    
+    const formData = this.productos.value;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json' // Asegúrate de que esto coincida con lo que el servidor espera
     });
-    this.http.post<Respuestas>('http://localhost:5013/api/Clientes/RegistrarClientes', formData, { headers }).subscribe(
+    this.http.post<Respuestas>('http://localhost:5013/api/productos/RegistrarProductos', formData, { headers }).subscribe(
       (response) => {
         this.data = response;
         this.validateResponse(this.data);
@@ -118,13 +104,13 @@ export class ClientesComponent {
   }
 
   enviarDataDeleted() {
-    const formData = this.deletedClientes.value;
+    const formData = this.deletedproductos.value;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json' // Asegúrate de que esto coincida con lo que el servidor espera
     });
-    this.http.post<Respuestas>('http://localhost:5013/api/Clientes/EliminarClientes', formData, { headers }).subscribe(
+    this.http.post<Respuestas>('http://localhost:5013/api/productos/Eliminarproductos', formData, { headers }).subscribe(
       (response) => {
-        this.data = response;       
+        this.data = response;
         this.validateResponseDeleted(this.data);
         this.fetchData();
         this.ejecutarConEsperaDeleted()
@@ -132,15 +118,15 @@ export class ClientesComponent {
         console.error('Error al enviar datos:', error);
       });
   }
-  
+
   enviarDataUpdate() {
-    const formData = this.clientesUpdate.value;
+    const formData = this.productosUpdate.value;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json' // Asegúrate de que esto coincida con lo que el servidor espera
     });
-    this.http.post<Respuestas>('http://localhost:5013/api/Clientes/ModificarClientes', formData, { headers }).subscribe(
+    this.http.post<Respuestas>('http://localhost:5013/api/Productos/ActualizarProductos', formData, { headers }).subscribe(
       (response) => {
-        this.data = response;       
+        this.data = response;
         this.validateResponseUpdate(this.data);
         this.fetchData();
         this.ejecutarConEspera()
@@ -149,12 +135,10 @@ export class ClientesComponent {
       });
   }
 
-
-
   ngOnInit() {
     this.fetchData();
     this.checkSession();
-    window.onpopstate = () => this.checkSession();    
+    window.onpopstate = () => this.checkSession();
     if (this.username === undefined || this.username === "" || this.username === null) {
       this.router.navigate(['/login']);
     }
@@ -175,19 +159,20 @@ export class ClientesComponent {
     this.isModalOpen = true;
   }
 
-  openModalUpdate(item: consultarClientes) {
-    this.datosClientes = item;
-    this.nombres = this.datosClientes.nombre;    
-    this.identificacion = this.datosClientes.identificacion;    
-    this.direccion = this.datosClientes.direccion;    
-    this.telefono = this.datosClientes.telefono;    
-    this.email = this.datosClientes.email;    
+  openModalUpdate(item: consultarProductos) {
+    this.datosproductos = item;    
+    this.codigo = this.datosproductos.codigo;
+    this.nombreProducto = this.datosproductos.nombreProducto;
+    this.estado = this.datosproductos.estado;
+    this.fechaRegistro = this.datosproductos.fechaRegistro;
+    this.precio = this.datosproductos.precio;
+    this.costo = this.datosproductos.costo;
+    console.log(this.codigo);
     this.isModalOpenUpdate = true;
-    
   }
-  openModalDeleted(item: deletedClientes) {
-    this.datosClientesDeleted = item;
-    this.identificacion = this.datosClientesDeleted.identificacion;
+  openModalDeleted(item: deletedProductos) {
+    this.datosproductosDeleted = item;
+    this.codigo = this.datosproductosDeleted.codigo;
     this.isModalOpenDeleted = true;
   }
 
@@ -202,7 +187,7 @@ export class ClientesComponent {
     this.data = null;
     this.limpiar();
   }
-  
+
   closeModalDeleted() {
     this.isModalOpenDeleted = false;
     this.data = null;
@@ -210,37 +195,36 @@ export class ClientesComponent {
   }
 
   limpiar() {
-    this.clientes = this.fb.group({
-      nombres: [''],
-      identificacion: [''],
-      direccion: [''],
-      telefono: [''],
-      email: [''],
+    this.productos = this.fb.group({
+      codigo: [''],
+      nombreProducto: [''],
+      precio: ['0'],
+      costo: ['0'],
+      estado: ['Activo'],
     });
   }
 
   limpiarUpdate() {
-    this.clientesUpdate = this.fb.group({
-      nombres: [''],
-      identificacion: [''],
-      direccion: [''],
-      telefono: [''],
-      email: [''],
-      estado: ['Activo']
+    this.productosUpdate = this.fb.group({
+      codigo: [''],
+      nombreProducto: [''],
+      precio: ['0'],
+      costo: ['0'],
+      estado: ['Activo'],
     });
   }
-  
+
   limpiarDeleted() {
-    this.deletedClientes = this.fb.group({
-      identificacion: [''],
+    this.deletedproductos = this.fb.group({
+      codigo: [''],
     });
   }
 
   validateResponse(datosValidar: any) {
-    this.validationErrors = [];   
+    this.validationErrors = [];
     if (datosValidar.statusCode == 200) {
-        this.limpiar();
-      }
+      this.limpiar();
+    }
   }
 
   validateResponseUpdate(datosValidar: any) {
@@ -249,7 +233,7 @@ export class ClientesComponent {
       this.limpiarUpdate();
     }
   }
-  
+
   validateResponseDeleted(datosValidar: any) {
     this.validationErrors = [];
     if (datosValidar.statusCode == 200) {
@@ -259,20 +243,20 @@ export class ClientesComponent {
 
   onSearch() {
     this.filteredData = this.datos.filter(item =>
-      item.identificacion.toLowerCase().includes(this.searchTerm.toLowerCase())
+      item.codigo.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     this.pageIndex = 0;
   }
 
-  selectItem(item: consultarClientes) {
-    this.selectedItem = item;    
+  selectItem(item: consultarProductos) {
+    this.selectedItem = item;
   }
 
   fetchData() {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json' // Asegúrate de que esto coincida con lo que el servidor espera
     });
-    this.http.post<consultarClientes[]>('http://localhost:5013/api/Clientes/ConsultarAllClientes', null, {headers})
+    this.http.post<consultarProductos[]>('http://localhost:5013/api/Productos/ConsultarAllProductos', null, { headers })
       .subscribe(data => {
         this.datos = data;
         this.filteredData = data; // Inicialmente mostramos todos los datos
@@ -299,7 +283,7 @@ export class ClientesComponent {
 
   async ejecutarConEspera() {
     await this.sleep(1);
-    this.closeModalUpdate();    
+    this.closeModalUpdate();
   }
 
   async ejecutarConEsperaDeleted() {
@@ -307,5 +291,50 @@ export class ClientesComponent {
     this.closeModalDeleted();
   }
 
+  validateDecimal(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    const currentValue = input.value;
+    const key = event.key;
+
+    // Permitir teclas de control y navegación
+    const controlKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Enter', 'Escape'];
+    if (controlKeys.includes(key)) {
+      return;
+    }
+
+    // Expresión regular para validar un número con un punto decimal y hasta dos decimales
+    const regex = /^\d*(\.\d{0,2})?$/;
+
+    // Crear un nuevo valor tentativo
+    let newValue = currentValue;
+
+    if (key === '.' && currentValue.includes('.')) {
+      // Si ya hay un punto, no permitir otro
+      event.preventDefault();
+      return;
+    }
+
+    newValue += key;
+
+    if (!regex.test(newValue)) {
+      // Si no coincide con la expresión regular, prevenir el ingreso
+      event.preventDefault();
+    }
+  }
+
+  validateNumber(event: KeyboardEvent): void {
+    const key = event.key;
+
+    // Permitir teclas de control y navegación
+    const controlKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Enter', 'Escape'];
+    if (controlKeys.includes(key)) {
+      return;
+    }
+
+    // Validar que solo se permita el ingreso de números
+    if (!/^\d$/.test(key)) {
+      event.preventDefault();
+    }
+  }
 
 }

@@ -11,6 +11,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ClientesComponent } from './clientes/clientes.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { productosComponent } from './productos/productos.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    ClientesComponent
+    ClientesComponent,
+    productosComponent,
+    UsuariosComponent
   ],
   imports: [
     HttpClientModule,

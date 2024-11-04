@@ -34,11 +34,11 @@
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" routerLink="/productos">
+          <a class="nav-link" routerLink="/clientes">
             <span class="menu-icon">
               <i class="mdi mdi-playlist-play"></i>
             </span>
-            <span class="menu-title">Productos</span>
+            <span class="menu-title">Clientes</span>
           </a>
         </li>
       </ul>
@@ -73,52 +73,47 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-         
+
           <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <div class="table-responsive">
-                    <div class="col-md-4 grid-margin" >
+                    <div class="col-md-4 grid-margin">
                       <div class="template-demo">
                         <button type="button" (click)="openModal()" class="btn btn-success btn-icon-text" style="width:100%">
-                          <i class="mdi mdi-plus btn-icon-prepend"></i> Agregar Clientes
+                          <i class="mdi mdi-plus btn-icon-prepend"></i> Agregar productos
                         </button>
                       </div>
                     </div>
                     <div class="col-md-12 grid-margin">
-                      <input [(ngModel)]="searchTerm" class="form-control" (input)="onSearch()" placeholder="Buscar Identificacion..." />
+                      <input [(ngModel)]="searchTerm" class="form-control" (input)="onSearch()" placeholder="Buscar codigo..." />
                     </div>
                     <table mat-table [dataSource]="filteredData" [dataSource]="paginatedData" class="mat-elevation-z8" style="color:white">
-                      <ng-container matColumnDef="nombres">
-                        <th *matHeaderCellDef class="mat-mdc-cell">Nombres</th>
-                        <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+                      <ng-container matColumnDef="codigo">
+                        <th *matHeaderCellDef class="mat-mdc-cell">codigo</th>
+                        <td mat-cell *matCellDef="let element">{{ element.codigo }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="nombreProducto">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Nombre Productos</th>
+                        <td mat-cell *matCellDef="let element">{{ element.nombreProducto }}</td>
                       </ng-container>
 
-                      <ng-container matColumnDef="identificacion">
-                        <th *matHeaderCellDef class="mat-mdc-cell">Identificacion</th>
-                        <td mat-cell *matCellDef="let element">{{ element.identificacion }}</td>
+                      <ng-container matColumnDef="precio">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Precio</th>
+                        <td mat-cell *matCellDef="let element">{{ element.precio }}</td>
                       </ng-container>
-
-                      <ng-container matColumnDef="direccion">
-                        <th *matHeaderCellDef class="mat-mdc-cell">Direccion</th>
-                        <td mat-cell *matCellDef="let element">{{ element.direccion }}</td>
-                      </ng-container>
-                      <ng-container matColumnDef="telefono">
-                        <th *matHeaderCellDef class="mat-mdc-cell">Telefono</th>
-                        <td mat-cell *matCellDef="let element">{{ element.telefono }}</td>
-                      </ng-container>
-                      <ng-container matColumnDef="email">
-                        <th *matHeaderCellDef class="mat-mdc-cell">Email</th>
-                        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
-                      </ng-container>
-                      <ng-container matColumnDef="fecharegistro">
-                        <th *matHeaderCellDef class="mat-mdc-cell">Fecha Registro</th>
-                        <td mat-cell *matCellDef="let element">{{ element.fechaRegistro }}</td>
+                      <ng-container matColumnDef="costo">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Costo</th>
+                        <td mat-cell *matCellDef="let element">{{ element.costo }}</td>
                       </ng-container>
                       <ng-container matColumnDef="estado">
                         <th *matHeaderCellDef class="mat-mdc-cell">Estado</th>
                         <td mat-cell *matCellDef="let element">{{ element.estado }}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="fechaRegistro">
+                        <th *matHeaderCellDef class="mat-mdc-cell">Fecha Registro</th>
+                        <td mat-cell *matCellDef="let element">{{ element.fechaRegistro }}</td>
                       </ng-container>
                       <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef class="mat-mdc-cell">Acciones</th>
@@ -129,8 +124,8 @@
 
                       </ng-container>
 
-                      <tr mat-header-row *matHeaderRowDef="['nombres', 'identificacion', 'direccion','telefono','email','fecharegistro','estado','actions']"></tr>
-                      <tr mat-row *matRowDef="let row; columns: ['nombres', 'identificacion', 'direccion','telefono','email','fecharegistro','estado','actions'];"></tr>
+                      <tr mat-header-row *matHeaderRowDef="['codigo', 'nombreProducto', 'precio','costo','estado','fechaRegistro','actions']"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['codigo', 'nombreProducto', 'precio','costo','estado','fechaRegistro','actions'];"></tr>
                     </table>
                     <div class="mat-elevation-z8" style="color:white">
                       <mat-paginator [length]="filteredData.length"
@@ -148,27 +143,33 @@
           <div class="modal " *ngIf="isModalOpen">
             <div class="modal-content">
 
-              <form [formGroup]="clientes">
+              <form [formGroup]="productos">
+
                 <div class="form-group">
-                  <label>Nombres</label>
-                  <input type="text" class="form-control" id="nombres" placeholder="Nombres" formControlName="nombres">
+                  <label>Codigo</label>
+                  <input type="text" class="form-control" formControlName="codigo" maxlength="15" (keydown)="validateNumber($event)" id="codigo" placeholder="codigo">
                 </div>
                 <div class="form-group">
-                  <label>Identificacion</label>
-                  <input type="text" class="form-control" formControlName="identificacion" maxlength="15" (keydown)="validateNumber($event)" id="identificacion" placeholder="Identificacion">
+                  <label>Nombre Producto</label>
+                  <input type="text" class="form-control" id="nombreProducto" placeholder="nombreProducto" formControlName="nombreProducto">
                 </div>
                 <div class="form-group">
-                  <label>Direccion</label>
-                  <input type="text" class="form-control" id="direccion" placeholder="Direccion" formControlName="direccion">
+                  <label>Costo</label>
+                  <input type="text" class="form-control" id="costo" placeholder="costo" formControlName="costo" (keydown)="validateDecimal($event)" maxlength="10">
                 </div>
                 <div class="form-group">
-                  <label>Telefono</label>
-                  <input type="text" class="form-control" id="telefono" placeholder="Telefono" formControlName="telefono" maxlength="10" (keydown)="validateNumber($event)">
+                  <label>Precio</label>
+                  <input type="text" class="form-control" id="precio" placeholder="Precio" formControlName="precio" (keydown)="validateDecimal($event)" maxlength="10">
                 </div>
-                <div class="form-group">
-                  <label>Email</label>
-                  <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email">
+                <div>
+                  <label>Estado</label>
+                  <select class="form-select btn btn-outline-secondary" id="seleccion" formControlName="estado">
+                    <option *ngFor="let opcion of opciones" [value]="opcion.valor">
+                      {{ opcion.texto }}
+                    </option>
+                  </select>
                 </div>
+
 
                 <div class="form-group">
                   <div *ngIf="data" class="text-center pt-1 mb-1 pb-1">
@@ -185,28 +186,23 @@
 
           <div class="modal " *ngIf="isModalOpenUpdate">
             <div class="modal-content">
-              <form [formGroup]="clientesUpdate">
+              <form [formGroup]="productosUpdate">
                 <div class="form-group">
-                  <label>Nombres</label>
-                  <input type="text" class="form-control" [(ngModel)]="nombres" id="nombres" placeholder="Nombres" formControlName="nombres" matInput>
+                  <label>Codigo</label>
+                  <input type="text" class="form-control" [(ngModel)]="codigo" formControlName="codigo" id="codigo" placeholder="codigo" readonly>
                 </div>
                 <div class="form-group">
-                  <label>Identificacion</label>
-                  <input type="text" class="form-control" [(ngModel)]="identificacion" formControlName="identificacion" maxlength="15" (keydown)="validateNumber($event)" id="identificacion" placeholder="Identificacion" readonly>
+                  <label>Nombre Producto</label>
+                  <input type="text" class="form-control" [(ngModel)]="nombreProducto" id="nombreProducto" placeholder="Nombre Producto" formControlName="nombreProducto">
                 </div>
                 <div class="form-group">
-                  <label>Direccion</label>
-                  <input type="text" class="form-control" [(ngModel)]="direccion" id="direccion" placeholder="Direccion" formControlName="direccion">
+                  <label>Costo</label>
+                  <input type="text" class="form-control" [(ngModel)]="costo" id="costo" placeholder="costo" formControlName="costo" (keydown)="validateDecimal($event)">
                 </div>
                 <div class="form-group">
-                  <label>Telefono</label>
-                  <input type="text" class="form-control" [(ngModel)]="telefono" id="telefono" placeholder="Telefono" formControlName="telefono" maxlength="10" (keydown)="validateNumber($event)">
+                  <label>Precio</label>
+                  <input type="text" class="form-control" [(ngModel)]="precio" id="precio" placeholder="Precio" formControlName="precio" (keydown)="validateDecimal($event)">
                 </div>
-                <div class="form-group">
-                  <label>Email</label>
-                  <input type="email" class="form-control" [(ngModel)]="email" id="email" placeholder="Email" formControlName="email">
-                </div>
-
                 <select class="form-select btn btn-outline-secondary" id="seleccion" formControlName="estado">
                   <option *ngFor="let opcion of opciones" [value]="opcion.valor">
                     {{ opcion.texto }}
@@ -230,11 +226,11 @@
           <div class="modal " *ngIf="isModalOpenDeleted">
             <div class="modal-content-deleted">
 
-              <form [formGroup]="deletedClientes">
+              <form [formGroup]="deletedproductos">
                 <div class="form-group">
                   <label>¿Deseas Inactivar al Cliente?</label>
-                  <input type="text" class="form-control" [(ngModel)]="identificacion" id="identificacion" formControlName="identificacion" matInput>
-                </div>             
+                  <input type="text" class="form-control" [(ngModel)]="codigo" id="codigo" formControlName="codigo" matInput>
+                </div>
                 <div class="form-group">
                   <div *ngIf="data" class="text-center pt-1 mb-1 pb-1">
                     <p style="color: white;">{{ data.mensaje }}</p>
