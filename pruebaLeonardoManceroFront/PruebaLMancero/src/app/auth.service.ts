@@ -15,6 +15,8 @@ export class AuthService {
   private isAuthenticated = false;
   constructor(private http: HttpClient, private router: Router) { }
 
+
+
   login(usuario: string, password: string): Observable<Respuestas[]> {
 
     const headers = new HttpHeaders({

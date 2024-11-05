@@ -307,5 +307,9 @@ export class ClientesComponent {
     this.closeModalDeleted();
   }
 
+  logOut() {
+    sessionStorage.removeItem('username');
+    this.router.navigate(['/login']);
+  }
 
 }

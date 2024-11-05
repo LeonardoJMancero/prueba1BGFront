@@ -49,6 +49,26 @@
             <span class="menu-title">Usuarios</span>
           </a>
         </li>
+        <li class="nav-item menu-items">
+          <a class="nav-link" routerLink="/factura">
+            <span class="menu-icon">
+              <i class="mdi mdi-playlist-play"></i>
+            </span>
+            <span class="menu-title">Facturas</span>
+          </a>
+        </li>
+      </ul>
+      <ul></ul>
+
+      <ul class="nav">
+        <li class="nav-item menu-items">
+          <a class="nav-link" routerLink="/login">
+            <span class="menu-icon">
+              <i class="mdi mdi-logout"></i>
+            </span>
+            <span class="menu-title" (click)="logOut()">Cerrar Session</span>
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- partial -->

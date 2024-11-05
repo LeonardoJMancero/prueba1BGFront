@@ -348,5 +348,9 @@ export class UsuariosComponent {
       event.preventDefault();
     }
   }
+  logOut() {
+    sessionStorage.removeItem('username');
+    this.router.navigate(['/login']);
+  }
 
 }

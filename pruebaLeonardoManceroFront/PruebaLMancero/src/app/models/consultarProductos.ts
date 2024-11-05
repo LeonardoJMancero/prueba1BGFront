@@ -5,6 +5,7 @@ export interface consultarProductos {
   fechaRegistro: string;
   precio: string;
   costo: string;
+  cantidad: string;
 }
 
 export interface deletedProductos {

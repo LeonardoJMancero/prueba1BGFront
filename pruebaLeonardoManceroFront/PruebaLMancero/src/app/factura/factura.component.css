@@ -28585,7 +28585,7 @@ div.tagsinput {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%; /* Ancho de la modal */
+  width: 70%; /* Ancho de la modal */
   /* color:black*/
 }
 
@@ -28595,6 +28595,17 @@ div.tagsinput {
   padding: 20px;
   border: 1px solid #888;
   width: 30%; /* Ancho de la modal */
+  /* color:black*/
+}
+
+.modal-content-ok{
+  background-color: #191c24;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+  text-align:center;
+  
   /* color:black*/
 }
 
@@ -28608,4 +28619,8 @@ div.tagsinput {
 
 .mat-mdc-cell {
   border-bottom-color: white;
+}
+
+.text-label-facturas{
+    color:white;
 }

@@ -78,16 +78,6 @@ export class productosComponent {
 
   }
 
-  allowOnlyNumbers(event: KeyboardEvent) {
-    const keyCode = event.keyCode || event.which;
-    const isNumber = keyCode >= 48 && keyCode <= 57; // Números del 0 al 9
-    //const isNumber2 = keyCode >= 96 && keyCode <= 105; // Números del 0 al 9
-    const isControl = keyCode === 8 || keyCode === 46 || keyCode === 37 || keyCode === 39; // Backspace, Delete, flechas
-    if (!isNumber && !isControl) {
-      event.preventDefault();
-    }
-  }
-
   enviarData() {
     const formData = this.productos.value;
     const headers = new HttpHeaders({
@@ -144,12 +134,33 @@ export class productosComponent {
     }
   }
 
-  checkSession() {
-    if (!this.authService.checkAuth()) {
-      sessionStorage.removeItem('username');
-      this.router.navigate(['/dashboard']);
-    }
+  onSearch() {
+    this.filteredData = this.datos.filter(item =>
+      item.codigo.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    this.pageIndex = 0;
   }
+
+  selectItem(item: consultarProductos) {
+    this.selectedItem = item;
+  }
+
+  fetchData() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json' // Asegúrate de que esto coincida con lo que el servidor espera
+    });
+    this.http.post<consultarProductos[]>('http://localhost:5013/api/Productos/ConsultarAllProductos', null, { headers })
+      .subscribe(data => {
+        this.datos = data;
+        this.filteredData = data; // Inicialmente mostramos todos los datos
+      });
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+  }
+
 
   isModalOpen = false;
   isModalOpenUpdate = false;
@@ -241,33 +252,24 @@ export class productosComponent {
     }
   }
 
-  onSearch() {
-    this.filteredData = this.datos.filter(item =>
-      item.codigo.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-    this.pageIndex = 0;
+  checkSession() {
+    if (!this.authService.checkAuth()) {
+      sessionStorage.removeItem('username');
+      this.router.navigate(['/dashboard']);
+    }
   }
 
-  selectItem(item: consultarProductos) {
-    this.selectedItem = item;
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const keyCode = event.keyCode || event.which;
+    const isNumber = keyCode >= 48 && keyCode <= 57; // Números del 0 al 9
+    //const isNumber2 = keyCode >= 96 && keyCode <= 105; // Números del 0 al 9
+    const isControl = keyCode === 8 || keyCode === 46 || keyCode === 37 || keyCode === 39; // Backspace, Delete, flechas
+    if (!isNumber && !isControl) {
+      event.preventDefault();
+    }
   }
 
-  fetchData() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json' // Asegúrate de que esto coincida con lo que el servidor espera
-    });
-    this.http.post<consultarProductos[]>('http://localhost:5013/api/Productos/ConsultarAllProductos', null, { headers })
-      .subscribe(data => {
-        this.datos = data;
-        this.filteredData = data; // Inicialmente mostramos todos los datos
-      });
-  }
-
-  onPageChange(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.pageIndex = event.pageIndex;
-  }
-
+ 
   get paginatedData() {
     const start = this.pageIndex * this.pageSize;
     return this.filteredData.slice(start, start + this.pageSize);
@@ -335,6 +337,13 @@ export class productosComponent {
     if (!/^\d$/.test(key)) {
       event.preventDefault();
     }
+
+
+  }
+
+  logOut() {
+    sessionStorage.removeItem('username');
+    this.router.navigate(['/login']);
   }
 
 }

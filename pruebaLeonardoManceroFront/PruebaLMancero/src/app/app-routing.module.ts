@@ -6,6 +6,7 @@ import { AuthGuard } from './auth.guard';
 import { ClientesComponent } from './clientes/clientes.component';
 import { productosComponent } from './productos/productos.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { FacturaComponent } from './factura/factura.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'clientes', component: ClientesComponent, canActivate: [AuthGuard] },
   { path: 'productos', component: productosComponent, canActivate: [AuthGuard] },
   { path: 'usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },
+  { path: 'factura', component: FacturaComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

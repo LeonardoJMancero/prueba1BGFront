@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { productosComponent } from './productos/productos.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { FacturaComponent } from './factura/factura.component';
 
 
 @NgModule({
@@ -22,7 +23,9 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
     DashboardComponent,
     ClientesComponent,
     productosComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    FacturaComponent,
+    FacturaComponent
   ],
   imports: [
     HttpClientModule,
